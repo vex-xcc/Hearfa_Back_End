@@ -41,6 +41,18 @@ const CustomerSchema = mongoose.Schema({
     maxlength: [10, 'Pease inter correct phone number'],
     required: [true, 'customer phone number required']
   },
+  RequestService: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Service'
+    }
+  ],
+  ReceivedService: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Service'
+    }
+  ],
   UserType:{
     type: String,
     required: [true, 'WorkerType is required'],
