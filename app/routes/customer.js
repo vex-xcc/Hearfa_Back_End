@@ -7,7 +7,9 @@ const config = require('../../config/db');
 
 require("dotenv").config();
 
-//-------------Get User info By User ID-------------------
+
+//---------------The GET router-------------------
+//Get User info By User ID
 router.get('/api/customer/:UserId', (req, res) => {
     Customer.findById(req.params.UserId)
     .populate('ReceivedService') 

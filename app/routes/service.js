@@ -41,8 +41,7 @@ router.patch('/api/UpdateService/:ServiceId', (req, res) => {
 
 
 
-//---------------The PATCH router-------------------  
-
+//---------------The Delete router-------------------  
 //Delete Service by Service Id
 router.delete('/api/DeleteService/:ServiceId', (req, res) => {
     Service.findById(req.params.ServiceId, async (error, foundService) => {
