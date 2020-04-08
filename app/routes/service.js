@@ -29,7 +29,27 @@ router.post('/api/:customerId', (req, res) => {
   });
 });
 
-//--------------- All GET Methods -------------------
+//--------------- All GET Methods -------------------\\
+
+//------------- Find all service depend on WorkerId and if the ServiceState is open -------------
+router.get('/api/service/:WorkerId', (req, res) => {
+  Customer.findById(req.params.WorkerId, (error, foundWorker) => {
+    let user_type = foundWorker.UserType
+    Service.find({})
+      .where('ServiceType').in(user_type)
+      .where("ServiceState").in('Open')
+      .populate('ServicesEmp')
+      .exec((err, Customer) => {
+        if (err) {
+          res.status(500).send(err);
+          return;
+        }
+        console.log(`found and populated all : ${Customer}`);
+        res.status(200).json(Customer);
+      })
+  });
+
+});
 
 //Find all service depend on userId and if the ServiceState is closed
 router.get('/api/service/closed/:WorkerId', (req, res) => {
@@ -50,7 +70,7 @@ router.get('/api/service/closed/:WorkerId', (req, res) => {
   });
 
 
-//--------------- All Patch Methods -------------------
+//--------------- All Patch Methods -------------------\\
 
 
 //Update Service by Service Id
@@ -68,7 +88,7 @@ router.patch('/api/UpdateService/:ServiceId', (req, res) => {
 
 
 
-//--------------- All Delete Methods ------------------- 
+//--------------- All Delete Methods -------------------\\
 
 
 //Delete Service by Service Id
