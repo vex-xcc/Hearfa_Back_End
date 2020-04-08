@@ -89,6 +89,31 @@ router.post('/api/customer/login', (req, res) => {
   });
 });
 //---------------The GET router-------------------
+//-------------Get ALl Customer RequestService By Customer ID-------------------
+
+router.get('/api/customer/RequestService/:CustomerId', (req, res) => {
+    Customer.findById(req.params.CustomerId)
+    .populate('RequestService') 
+    .exec( (err, oneCustomer) =>{
+      if (err) return res.status(404).json(err);
+      console.log('Services',oneCustomer);
+      res.send(oneCustomer.RequestService)
+        });
+
+      });
+  
+//-------------Get ALl Customer ReceivedService By Customer ID-------------------
+
+router.get('/api/customer/ReceivedService/:CustomerId', (req, res) => {
+    Customer.findById(req.params.CustomerId)
+    .populate('ReceivedService') 
+    .exec( (err, oneCustomer) =>{
+      if (err) return res.status(404).json(err);
+      console.log('Services',oneCustomer);
+      res.send(oneCustomer.ReceivedService)
+        });
+
+      });
 //Get User info By User ID
 router.get('/api/customer/:UserId', (req, res) => {
     Customer.findById(req.params.UserId)
