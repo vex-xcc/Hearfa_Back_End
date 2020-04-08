@@ -92,7 +92,6 @@ router.post('/api/customer/login', (req, res) => {
 //Get User info By User ID
 router.get('/api/customer/:UserId', (req, res) => {
     Customer.findById(req.params.UserId)
-    .populate('RequestService') 
     .exec( (err, User) =>{
       if (err) return res.status(404).json(err);
       console.log('Services',User);
