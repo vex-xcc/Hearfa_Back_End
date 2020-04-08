@@ -52,23 +52,20 @@ router.get('/api/service/:WorkerId', (req, res) => {
 });
 
 //Find all service depend on userId and if the ServiceState is closed
-router.get('/api/service/closed/:WorkerId', (req, res) => {
-    Customer.findById(req.params.WorkerId, (error, foundWorker) => {
-      Service.find({})
-        .where("ServiceState").in('closed')
-        .populate('ServicesEmp')
-  
-        .exec((err, Customer) => {
-          if (err) {
-            res.status(500).send(err);
-            return;
-          }
-          console.log(`found and populated all : ${Customer}`);
-          res.status(200).json(Customer);
-        })
+router.get('/api/Find/All/closed/Service/:UserId', (req, res) => {
+  Customer.findById(req.params.UserId, (error, foundWorker) => {
+    Service.find({$or:[{_id:foundWorker.RequestService},{_id:foundWorker.ReceivedService}]})
+      .where("ServiceState").in('Closed')
+      .exec((err, Customer) => {
+        if (err) {
+          res.status(500).send(err);
+          return;
+        }
+        console.log(`found and populated all : ${Customer}`);
+        res.status(200).json(Customer);
+      })
     });
   });
-
 
 //--------------- All Patch Methods -------------------\\
 
