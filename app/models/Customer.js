@@ -53,6 +53,10 @@ const CustomerSchema = mongoose.Schema({
       ref: 'Service'
     }
   ],
+  Worker: {
+    type: Boolean,
+    default: false
+  },
   UserType:{
     type: String,
     required: [true, 'WorkerType is required'],
