@@ -42,8 +42,52 @@ router.post('/api/customer/register', (req, res) => {
       }
   });
 });
+// this rout response to check user input and match them
+//with database and login the user
+router.post('/api/customer/login', (req, res) => {
+  const Username = req.body.Username;
+  const password = req.body.password;
 
+  Customer.getUserByUsername(Username, (err, customer) => {
+      if (err) throw err;
+      if (!customer) {
+          return res.json({
+              success: false,
+              message: "User not found."
+          });
+      }
 
+      Customer.comparePassword(password, customer.password, (err, isMatch) => {
+          if (err) throw err;
+          if (isMatch) {
+              const token = jwt.sign({
+                  type: "customer",
+                  data: {
+                      _id: customer._id,
+                      Username: customer.Username,
+                      FullName: customer.FullName,
+                      Email: customer.Email,
+                      Phone: customer.Phone,
+                      Worker: customer.Worker,
+                      UserType: customer.UserType
+                  }
+              }, config.database.secret, {
+                  expiresIn: 18000 // for 5 Hou time in seconds
+              });
+              console.log(token);
+              return res.json({
+                  success: true,
+                  token: "jwt " + token
+              });
+          } else {
+              return res.json({
+                  success: true,
+                  message: "Wrong Password."
+              });
+          }
+      });
+  });
+});
 //---------------The GET router-------------------
 //Get User info By User ID
 router.get('/api/customer/:UserId', (req, res) => {
