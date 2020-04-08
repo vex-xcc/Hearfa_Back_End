@@ -99,8 +99,31 @@ router.get('/api/Find/All/OnProgress/Service/:UserId', (req, res) => {
   });
 });
 
-//--------------- All Patch Methods -------------------\\
 
+//--------------- All Patch Methods -------------------\\
+//this rout response to Find Service By ServiceId and Update the Price
+//depend On User who Add the Price to the Service and Update AllPrice
+//with New Price that Worker add with his information
+router.patch('/api/PassService/:ServiceId', (req, res) => { 
+  Service.findById(req.params.ServiceId, async (error, foundService) => {
+    try {
+      await foundService.AllPrice.push(req.body)
+    } catch (error) {
+      res.status(404).json(error);
+    }
+    Customer.findById(req.body.ServicesEmp, async (error, foundCustomer) => {
+      try { 
+       await foundService.save()
+       foundCustomer.ReceivedService.push(foundService);
+       foundCustomer.save()
+        res.status(200).json(foundService);
+      } catch (error) {
+        res.status(404).json(error);
+      }
+    })
+  
+  });
+});
 
 //Update Service by Service Id
 router.patch('/api/UpdateService/:ServiceId', (req, res) => {
